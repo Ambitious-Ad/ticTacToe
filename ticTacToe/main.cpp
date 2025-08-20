@@ -2,6 +2,9 @@
 #include <random>
 #include <conio.h>
 
+// TODO: Add player 2
+// TODO: Add play again option
+
 int randomNumber()
 {
 	std::random_device rd;
@@ -27,6 +30,7 @@ void printBoard(const int& row,const int& column, const char gameBoard[][3])
 				std::cout << " | ";
 
 		}
+
 		std::cout << "\n";
 		if (i < 2)
 		{
@@ -91,14 +95,19 @@ char selectShape()
 
 bool isSpaceTaken(const char gameBoard[][3], int r, int c)
 {
-	bool isTaken{ false };
+	bool isTaken{ true };
 
-	// Check if position is already taken.
-	if (gameBoard[r][c] != ' ')
-	{
-		isTaken = true;
-	}
+	// TODO: Check if position is already taken	
+	
 	return isTaken;
+}
+
+int computerChoice()
+{
+
+	// TODO: add ai player
+
+	return 0;
 }
 
 int main()
@@ -106,7 +115,8 @@ int main()
 	const int row{ 3 };
 	const int column{ 3 };
 
-	std::cout << "Tic Tac Toe! 1.0 MVP\n";
+	std::cout << "Welcome to Tic-Tac-Toe!\n";
+	std::cout << "Player one select your shape!\n";
 
 	bool gameStart{ true };
 	char gameBoard[row][column] = {
@@ -127,10 +137,9 @@ int main()
 		int r = (selectedPostion - 1) / column;
 		int c = (selectedPostion - 1) % column;
 
-		if (isSpaceTaken(gameBoard, r, c))
+		if (gameBoard[r][c] != ' ')
 		{
-			std::cout << "That position is already selected!\n";
-			continue;
+			std::cout << "Already taken!\n";
 		}
 
 		gameBoard[r][c] = selectedShape;
