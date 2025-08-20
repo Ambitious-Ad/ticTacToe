@@ -41,7 +41,7 @@ void printBoard(const int& row,const int& column, const char gameBoard[][3])
 	std::cout << "=======================\n";
 }
 
-bool checkForWin(int row, const char gameBoard[][3], char& selectShape)
+bool checkForWin(int row, const char gameBoard[][3], char& selectShape, int& count)
 {
 
 	bool gameStart = true;
@@ -73,6 +73,13 @@ bool checkForWin(int row, const char gameBoard[][3], char& selectShape)
 	{
 		gameStart = false;
 	}
+
+	if (count >= 9)
+	{
+		std::cout << "It's a tie!";
+		gameStart = false;
+	}
+
 	return gameStart;
 }
 
@@ -86,6 +93,8 @@ int selectPosition()
 
 char selectShape()
 {
+	// TODO: validate input is either X or O
+	std::cout << "Player one select your shape!\n";
 	char selectShape{ 'X' };
 	std::cout << "Select shape X|O - ";
 	std::cin >> selectShape;
@@ -95,11 +104,8 @@ char selectShape()
 
 bool isSpaceTaken(const char gameBoard[][3], int r, int c)
 {
-	bool isTaken{ true };
-
-	// TODO: Check if position is already taken	
-	
-	return isTaken;
+	// TODO: Check if position is already taken	if true loop till valid move
+	return gameBoard[r][c] != ' ';
 }
 
 int computerChoice()
@@ -116,7 +122,6 @@ int main()
 	const int column{ 3 };
 
 	std::cout << "Welcome to Tic-Tac-Toe!\n";
-	std::cout << "Player one select your shape!\n";
 
 	bool gameStart{ true };
 	char gameBoard[row][column] = {
@@ -125,7 +130,16 @@ int main()
 		{' ', ' ', ' '},
 	};
 
-	char selectedShape{ selectShape() };
+	char playerOne{ selectShape() };
+	char playerTwo{ 'O' };
+
+	if (playerOne == 'O')
+	{
+		playerTwo = 'X';
+	}
+
+	int count{ 0 };
+	int playerOneEven{ 2 };
 	
 	while (gameStart)
 	{
@@ -137,14 +151,22 @@ int main()
 		int r = (selectedPostion - 1) / column;
 		int c = (selectedPostion - 1) % column;
 
-		if (gameBoard[r][c] != ' ')
+		if (!isSpaceTaken)
 		{
-			std::cout << "Already taken!\n";
+			continue;
 		}
 
-		gameBoard[r][c] = selectedShape;
-
-		gameStart = checkForWin(row, gameBoard, selectedShape);
+		if (count % playerOneEven == 0 )
+		{
+			gameBoard[r][c] = playerOne;
+			gameStart = checkForWin(row, gameBoard, playerOne, count);
+		}
+		else
+		{
+			gameBoard[r][c] = playerTwo;
+			gameStart = checkForWin(row, gameBoard, playerTwo, count);
+		}
+		count++;
 	}
 	
 	return 0;
