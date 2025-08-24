@@ -10,9 +10,15 @@ int randomNumber()
 	return random(md);
 }
 
-void printBoard(const int& row,const int& column, const char gameBoard[][3])
+void clearScreen()
 {
 	system("cls");
+
+}
+
+void printBoard(const int& row,const int& column, const char gameBoard[][3])
+{
+	clearScreen();
 	std::cout << "===== Tic-Tac-Toe =====\n";
 
 	for (int i = 0; i < row; ++i)
@@ -105,11 +111,20 @@ int selectPosition(const char gameBoard[3][3],const int& column)
 char selectShape()
 {
 	// TODO: validate input is either X or O
-	std::cout << "Player one select your shape!\n";
-	char selectShape{ 'X' };
-	std::cout << "Select shape X|O - ";
-	std::cin >> selectShape;
-	selectShape = toupper(selectShape);
+	char selectShape{ ' ' };
+	while (selectShape != 'X' && selectShape != 'O')
+	{
+		std::cout << "Player one select your shape!\n";
+		std::cout << "Select shape X|O - ";
+		std::cin >> selectShape;
+		selectShape = toupper(selectShape);
+		clearScreen();
+		if (selectShape != 'X' && selectShape != 'O')
+		{
+			std::cout << "Incorrect input please try again!\n";
+		}
+		
+	}
 	return selectShape;
 }
 
