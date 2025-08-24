@@ -1,5 +1,6 @@
 #include <iostream>
 #include <random>
+#include <limits>
 
 int randomNumber()
 {
@@ -16,7 +17,7 @@ void clearScreen()
 
 }
 
-void printBoard(const int& row,const int& column, const char gameBoard[][3])
+void printBoard(const int& row, const int& column, const char gameBoard[][3])
 {
 	clearScreen();
 	std::cout << "===== Tic-Tac-Toe =====\n";
@@ -79,7 +80,12 @@ bool checkForWin(int row, const char gameBoard[3][3], char& selectShape, int& co
 	return gameStart;
 }
 
-int selectPosition(const char gameBoard[3][3],const int& column)
+void clearInputBuffer()
+{
+	std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+}
+
+int selectPosition(const char gameBoard[3][3], const int& row, const int& column)
 {
 
 	bool spaceTaken{ true };
@@ -89,15 +95,36 @@ int selectPosition(const char gameBoard[3][3],const int& column)
 	{
 
 		std::cout << " 1, 2, 3, \n 4, 5, 6, \n 7, 8, 9 - ";
-		std::cin >> selectedPostion;
+		if (!(std::cin >> selectedPostion))
+		{
+			clearScreen();
+			printBoard(row, column, gameBoard);
+			std::cerr << "Not a number!\n";
+			std::cin.clear();
+			clearInputBuffer();
+			continue;
+		}
+		else if (selectedPostion < 1 || selectedPostion > 9)
+		{
+			clearScreen();
+			std::cout << "Please input a number between 1 and 9!\n";
+			printBoard(row, column, gameBoard);
+			clearInputBuffer();
+			std::cin.clear();
+			continue;
+		}
 
 		int r = (selectedPostion - 1) / column;
 		int c = (selectedPostion - 1) % column;
 
+		clearScreen();
+
 		if (gameBoard[r][c] != ' ')
 		{
+			printBoard(row, column, gameBoard);
 			std::cout << "That spot is taken please try again!\n";
 		}
+
 		else
 		{
 			spaceTaken = false;
@@ -110,7 +137,6 @@ int selectPosition(const char gameBoard[3][3],const int& column)
 
 char selectShape()
 {
-	// TODO: validate input is either X or O
 	char selectShape{ ' ' };
 	while (selectShape != 'X' && selectShape != 'O')
 	{
@@ -118,12 +144,13 @@ char selectShape()
 		std::cout << "Select shape X|O - ";
 		std::cin >> selectShape;
 		selectShape = toupper(selectShape);
+
 		clearScreen();
+
 		if (selectShape != 'X' && selectShape != 'O')
 		{
 			std::cout << "Incorrect input please try again!\n";
 		}
-		
 	}
 	return selectShape;
 }
@@ -175,8 +202,8 @@ int main()
 
 	int count{ 0 };
 	int isPlayerOne{ 2 };
-	char currentShape{'X'};
-	
+	char currentShape{ 'X' };
+
 	while (gameStart)
 	{
 
@@ -193,7 +220,7 @@ int main()
 			std::cout << "Player: " << currentShape << " make selection!\n";
 		}
 
-		int selectedPostion{ selectPosition(gameBoard, column) };
+		int selectedPostion{ selectPosition(gameBoard, row, column) };
 
 		int r = (selectedPostion - 1) / column;
 		int c = (selectedPostion - 1) % column;
