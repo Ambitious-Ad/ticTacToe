@@ -1,9 +1,5 @@
 #include <iostream>
 #include <random>
-#include <conio.h>
-
-// TODO: Add player 2
-// TODO: Add play again option
 
 int randomNumber()
 {
@@ -41,7 +37,7 @@ void printBoard(const int& row,const int& column, const char gameBoard[][3])
 	std::cout << "=======================\n";
 }
 
-bool checkForWin(int row, const char gameBoard[][3], char& selectShape, int& count)
+bool checkForWin(int row, const char gameBoard[3][3], char& selectShape, int& count)
 {
 
 	bool gameStart = true;
@@ -74,21 +70,36 @@ bool checkForWin(int row, const char gameBoard[][3], char& selectShape, int& cou
 		gameStart = false;
 	}
 
-	if (count >= 9)
-	{
-		std::cout << "It's a tie!";
-		gameStart = false;
-	}
-
 	return gameStart;
 }
 
-int selectPosition()
+int selectPosition(const char gameBoard[3][3],const int& column)
 {
-	int selection{ 1 };
-	std::cout << "Select position:\n 1, 2, 3, \n 4, 5, 6, \n 7, 8, 9 - ";
-	std::cin >> selection;
-	return selection;
+
+	bool spaceTaken{ true };
+	int selectedPostion{ 1 };
+
+	while (spaceTaken)
+	{
+
+		std::cout << "Select position:\n 1, 2, 3, \n 4, 5, 6, \n 7, 8, 9 - ";
+		std::cin >> selectedPostion;
+
+		int r = (selectedPostion - 1) / column;
+		int c = (selectedPostion - 1) % column;
+
+		if (gameBoard[r][c] != ' ')
+		{
+			std::cout << "That spot is taken please try again!\n";
+		}
+		else
+		{
+			spaceTaken = false;
+		}
+
+	}
+
+	return selectedPostion;
 }
 
 char selectShape()
@@ -102,18 +113,26 @@ char selectShape()
 	return selectShape;
 }
 
-bool isSpaceTaken(const char gameBoard[][3], int r, int c)
-{
-	// TODO: Check if position is already taken	if true loop till valid move
-	return gameBoard[r][c] != ' ';
-}
-
 int computerChoice()
 {
 
 	// TODO: add ai player
 
 	return 0;
+}
+
+bool playAgain()
+{
+	bool replay = false;
+	std::cout << "Play again? (Y/N) - ";
+	std::cin >> replay;
+
+	if (replay == 'y' || replay == 'Y')
+	{
+		replay = true;
+	}
+
+	return replay;
 }
 
 int main()
@@ -124,13 +143,13 @@ int main()
 	std::cout << "Welcome to Tic-Tac-Toe!\n";
 
 	bool gameStart{ true };
-	char gameBoard[row][column] = {
+	char gameBoard[row][column] = { // reset
 		{' ', ' ', ' '},
 		{' ', ' ', ' '},
 		{' ', ' ', ' '},
 	};
 
-	char playerOne{ selectShape() };
+	char playerOne{ selectShape() }; // reset
 	char playerTwo{ 'O' };
 
 	if (playerOne == 'O')
@@ -138,36 +157,47 @@ int main()
 		playerTwo = 'X';
 	}
 
-	int count{ 0 };
-	int playerOneEven{ 2 };
+	int count{ 0 }; // reset
+	int isPlayerOne{ 2 };
+	char currentShape{'X'};
 	
 	while (gameStart)
 	{
 
 		printBoard(row, column, gameBoard);
 
-		int selectedPostion{ selectPosition() };
+		if (count % isPlayerOne == 0)
+		{
+			currentShape = playerOne;
+		}
+		else
+		{
+			currentShape = playerTwo;
+		}
+
+		int selectedPostion{ selectPosition(gameBoard, column) };
 
 		int r = (selectedPostion - 1) / column;
 		int c = (selectedPostion - 1) % column;
 
-		if (!isSpaceTaken)
-		{
-			continue;
-		}
+		gameBoard[r][c] = currentShape;
+		gameStart = checkForWin(row, gameBoard, currentShape, count);
 
-		if (count % playerOneEven == 0 )
-		{
-			gameBoard[r][c] = playerOne;
-			gameStart = checkForWin(row, gameBoard, playerOne, count);
-		}
-		else
-		{
-			gameBoard[r][c] = playerTwo;
-			gameStart = checkForWin(row, gameBoard, playerTwo, count);
-		}
 		count++;
+
+		if (count >= 9)
+		{
+			printBoard(row, column, gameBoard);
+			std::cout << "Tie game!\n";
+			gameStart = playAgain();
+		}
+		else if (gameStart == false)
+		{
+			printBoard(row, column, gameBoard);
+			std::cout << currentShape << " Wins!\n";
+			gameStart = playAgain();
+		}
 	}
-	
+
 	return 0;
 }
