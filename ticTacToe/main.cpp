@@ -82,7 +82,7 @@ int selectPosition(const char gameBoard[3][3],const int& column)
 	while (spaceTaken)
 	{
 
-		std::cout << "Select position:\n 1, 2, 3, \n 4, 5, 6, \n 7, 8, 9 - ";
+		std::cout << " 1, 2, 3, \n 4, 5, 6, \n 7, 8, 9 - ";
 		std::cin >> selectedPostion;
 
 		int r = (selectedPostion - 1) / column;
@@ -124,10 +124,11 @@ int computerChoice()
 bool playAgain()
 {
 	bool replay = false;
+	char userInput{ 'n' };
 	std::cout << "Play again? (Y/N) - ";
-	std::cin >> replay;
+	std::cin >> userInput;
 
-	if (replay == 'y' || replay == 'Y')
+	if (userInput == 'y' || userInput == 'Y')
 	{
 		replay = true;
 	}
@@ -143,13 +144,13 @@ int main()
 	std::cout << "Welcome to Tic-Tac-Toe!\n";
 
 	bool gameStart{ true };
-	char gameBoard[row][column] = { // reset
+	char gameBoard[row][column] = {
 		{' ', ' ', ' '},
 		{' ', ' ', ' '},
 		{' ', ' ', ' '},
 	};
 
-	char playerOne{ selectShape() }; // reset
+	char playerOne{ selectShape() };
 	char playerTwo{ 'O' };
 
 	if (playerOne == 'O')
@@ -157,7 +158,7 @@ int main()
 		playerTwo = 'X';
 	}
 
-	int count{ 0 }; // reset
+	int count{ 0 };
 	int isPlayerOne{ 2 };
 	char currentShape{'X'};
 	
@@ -169,10 +170,12 @@ int main()
 		if (count % isPlayerOne == 0)
 		{
 			currentShape = playerOne;
+			std::cout << "Player: " << currentShape << " make selection!\n";
 		}
 		else
 		{
 			currentShape = playerTwo;
+			std::cout << "Player: " << currentShape << " make selection!\n";
 		}
 
 		int selectedPostion{ selectPosition(gameBoard, column) };
@@ -190,12 +193,28 @@ int main()
 			printBoard(row, column, gameBoard);
 			std::cout << "Tie game!\n";
 			gameStart = playAgain();
+			count = 0;
+			for (int i = 0; i < row; ++i)
+			{
+				for (int j = 0; j < column; ++j)
+				{
+					gameBoard[i][j] = ' ';
+				}
+			}
 		}
 		else if (gameStart == false)
 		{
 			printBoard(row, column, gameBoard);
-			std::cout << currentShape << " Wins!\n";
+			std::cout << currentShape << " Wins the game!\n";
 			gameStart = playAgain();
+			count = 0;
+			for (int i = 0; i < row; ++i)
+			{
+				for (int j = 0; j < column; ++j)
+				{
+					gameBoard[i][j] = ' ';
+				}
+			}
 		}
 	}
 
