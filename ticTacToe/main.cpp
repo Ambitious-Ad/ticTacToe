@@ -14,7 +14,6 @@ int randomNumber()
 void clearScreen()
 {
 	system("cls");
-
 }
 
 void printBoard(const int& row, const int& column, const char gameBoard[][3])
@@ -44,7 +43,7 @@ void printBoard(const int& row, const int& column, const char gameBoard[][3])
 	std::cout << "=======================\n";
 }
 
-bool checkForWin(int row, const char gameBoard[3][3], char& selectShape, int& count)
+bool checkForWin(int row, const char gameBoard[3][3], char& selectShape)
 {
 
 	bool gameStart = true;
@@ -52,13 +51,13 @@ bool checkForWin(int row, const char gameBoard[3][3], char& selectShape, int& co
 	// Check to see who wins
 	for (int i = 0; i < row; ++i)
 	{
-		// Horizontal check
+		// Row check
 		if (gameBoard[0][i] == selectShape && gameBoard[1][i] == selectShape && gameBoard[2][i] == selectShape)
 		{
 			gameStart = false;
 		}
 
-		// Vertical check
+		// column check
 		if (gameBoard[i][0] == selectShape && gameBoard[i][1] == selectShape && gameBoard[i][2] == selectShape)
 		{
 			gameStart = false;
@@ -226,7 +225,7 @@ int main()
 		int c = (selectedPostion - 1) % column;
 
 		gameBoard[r][c] = currentShape;
-		gameStart = checkForWin(row, gameBoard, currentShape, count);
+		gameStart = checkForWin(row, gameBoard, currentShape);
 
 		count++;
 
