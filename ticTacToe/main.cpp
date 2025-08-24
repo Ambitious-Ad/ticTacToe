@@ -243,11 +243,11 @@ int main()
 				std::cout << currentShape << " wins the game!\n";
 			}
 
-			if (currentShape == 'X')
+			if (currentShape == 'X' && count < 9)
 			{
 				xWins++;
 			}
-			else
+			else if (currentShape == 'O' && count < 9)
 			{
 				oWins++;
 			}
