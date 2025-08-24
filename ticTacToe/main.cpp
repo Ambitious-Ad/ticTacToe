@@ -181,6 +181,8 @@ int main()
 {
 	const int row{ 3 };
 	const int column{ 3 };
+	int xWins{ 0 };
+	int oWins{ 0 };
 
 	std::cout << "Welcome to Tic-Tac-Toe!\n";
 
@@ -229,24 +231,30 @@ int main()
 
 		count++;
 
-		if (count >= 9)
+		if (count >= 9 || gameStart == false)
 		{
 			printBoard(row, column, gameBoard);
-			std::cout << "Tie game!\n";
-			gameStart = playAgain();
-			count = 0;
-			for (int i = 0; i < row; ++i)
+			if (count >= 9)
 			{
-				for (int j = 0; j < column; ++j)
-				{
-					gameBoard[i][j] = ' ';
-				}
+				std::cout << "Tie game!\n";
 			}
-		}
-		else if (gameStart == false)
-		{
-			printBoard(row, column, gameBoard);
-			std::cout << currentShape << " Wins the game!\n";
+			else
+			{
+				std::cout << currentShape << " wins the game!\n";
+			}
+
+			if (currentShape == 'X')
+			{
+				xWins++;
+			}
+			else
+			{
+				oWins++;
+			}
+
+			std::cout << "X has won " << xWins << " games!\n";
+			std::cout << "O has won " << oWins << " games!\n";
+
 			gameStart = playAgain();
 			count = 0;
 			for (int i = 0; i < row; ++i)
