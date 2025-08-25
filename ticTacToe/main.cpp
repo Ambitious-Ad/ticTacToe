@@ -183,6 +183,7 @@ int main()
 	const int column{ 3 };
 	int xWins{ 0 };
 	int oWins{ 0 };
+	int maxMoves{ 9 };
 
 	std::cout << "Welcome to Tic-Tac-Toe!\n";
 
@@ -231,11 +232,11 @@ int main()
 
 		count++;
 
-		if (count >= 9 || gameStart == false)
+		if (count >= maxMoves || gameStart == false)
 		{
 			printBoard(row, column, gameBoard);
 
-			if (count >= 9)
+			if (count >= maxMoves)
 			{
 				std::cout << "Tie game!\n";
 			}
@@ -244,11 +245,11 @@ int main()
 				std::cout << currentShape << " wins the game!\n";
 			}
 
-			if (currentShape == 'X' && count < 9)
+			if (currentShape == 'X' && count < maxMoves)
 			{
 				xWins++;
 			}
-			else if (currentShape == 'O' && count < 9)
+			else if (currentShape == 'O' && count < maxMoves)
 			{
 				oWins++;
 			}
