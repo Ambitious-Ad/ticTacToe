@@ -18,7 +18,7 @@ void clearScreen()
 
 void printBoard(const int& row, const int& column, const char gameBoard[][3])
 {
-	clearScreen();
+
 	std::cout << "===== Tic-Tac-Toe =====\n";
 
 	for (int i = 0; i < row; ++i)
@@ -106,8 +106,8 @@ int selectPosition(const char gameBoard[3][3], const int& row, const int& column
 		else if (selectedPostion < 1 || selectedPostion > 9)
 		{
 			clearScreen();
-			std::cout << "Please input a number between 1 and 9!\n";
 			printBoard(row, column, gameBoard);
+			std::cerr << "Please input a number between 1 and 9!\n";
 			clearInputBuffer();
 			std::cin.clear();
 			continue;
@@ -234,6 +234,7 @@ int main()
 		if (count >= 9 || gameStart == false)
 		{
 			printBoard(row, column, gameBoard);
+
 			if (count >= 9)
 			{
 				std::cout << "Tie game!\n";
@@ -264,6 +265,7 @@ int main()
 					gameBoard[i][j] = ' ';
 				}
 			}
+			clearScreen();
 		}
 	}
 
